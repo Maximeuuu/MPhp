@@ -12,7 +12,7 @@ class DB {
 	/************************************************************************/	
 	private function __construct() {
 		// Connexion à la base de données
-		$connStr = 'pgsql:host='.getPortNumber().' port='.getPortNumber().' dbname='.getLogin();
+		$connStr = 'pgsql:host='.getUtilisateur().' port='.getPortNumber().' dbname='.getLogin();
 		try {
 			// Connexion à la base
 			$this->connect = new PDO($connStr, getLogin(), getMdp() );
@@ -116,14 +116,20 @@ class DB {
 	/*************************************************************************
 	* Fonctions qui peuvent être utilisées dans les scripts PHP
 	*************************************************************************/
+	public function getUtilisateurs() {
+		$requete = 'select * from MUtilisateur';
+		return $this->execQuery($requete,null,'MUtilisateur');
+	}
+	
 	public function getMessages() {
 		$requete = 'select * from MMEssage';
 		return $this->execQuery($requete,null,'MMessage');
-	}    
+	}
 
-	public function getMessageID($id) {
-		$requete = 'select * from MMessage where idMessage = ?';
-		return $this->execQuery($requete,array($id),'MMEssage');
+	public function getMessagesID($id1,$id2) {
+		$requete = 'select * from MMessage where idusource = ? and idudest = ? or idusource = ? and idudest = ?';
+		$tparam = array($id1,$id2,$id2,$id1);
+		return $this->execQuery($requete,$tparam,'MMEssage');
 	}
 
 	public function getMessageAtDate($date) {
@@ -147,6 +153,11 @@ class DB {
 		$requete = 'update MMessage set $contenu = \'message supprime\' where idMessage = ?';
 		$tparam = array($id);
 		return $this->execMaj($requete,$tparam);
+	}
+	
+	public function getMessageCommunication($idUserS,$idUserD) {
+		$requete = 'select * from MCommunication where idUserSource = ? and idUserDestination = ?';
+		return $this->execQuery($requete,$idUserS,$idUserD);
 	}
 
 	public function insertCommunication($idUserS,$idUserD,$idMessage) {

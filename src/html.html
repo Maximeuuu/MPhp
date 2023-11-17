@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de Discussion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #chat-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: scroll;
+        }
+
+        #message-form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <!-- Zone de discussion -->
+        <div><strong>Utilisateur 1:</strong> Bonjour !</div>
+        <div><strong>Utilisateur 2:</strong> Salut !</div>
+        <!-- Ajoutez d'autres messages ici -->
+
+    </div>
+
+    <!-- Formulaire de saisie de texte -->
+    <form id="message-form">
+        <label for="message">Message :</label>
+        <input type="text" id="message" name="message" required>
+        <button type="button" onclick="sendMessage()">Envoyer</button>
+    </form>
+
+    <script>
+        function sendMessage() {
+            var messageInput = document.getElementById("message");
+            var message = messageInput.value.trim();
+
+            if (message !== "") {
+                // Ajoutez le nouveau message à la zone de discussion
+                var chatContainer = document.getElementById("chat-container");
+                var newMessage = document.createElement("div");
+                newMessage.innerHTML = "<strong>Utilisateur:</strong> " + message;
+                chatContainer.appendChild(newMessage);
+
+                // Effacez le champ de saisie
+                messageInput.value = "";
+            }
+        }
+    </script>
+</body>
+</html>
+
